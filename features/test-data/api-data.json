@@ -1,0 +1,28 @@
+{
+  "products": {
+    "matchingSearch": "Blue Top",
+    "nonMatchingSearch": "no-such-product-xyz"
+  },
+  "login": {
+    "invalidEmail": "missing-user@example.invalid",
+    "invalidPassword": "InvalidPassword123"
+  },
+  "accountEmailPrefix": "api-test",
+  "account": {
+    "name": "API Test User",
+    "title": "Mr",
+    "birth_date": "10",
+    "birth_month": "5",
+    "birth_year": "1990",
+    "firstname": "API",
+    "lastname": "Tester",
+    "company": "AutomationExercise",
+    "address1": "1 Test Street",
+    "address2": "Test Area",
+    "country": "India",
+    "state": "Test State",
+    "city": "Test City",
+    "zipcode": "12345",
+    "mobile_number": "1234567890"
+  }
+}

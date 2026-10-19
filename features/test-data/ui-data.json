@@ -1,0 +1,31 @@
+{
+  "login": {
+    "invalidEmail": "missing-user@example.invalid",
+    "invalidPassword": "IncorrectPassword123"
+  },
+  "products": {
+    "matchingSearch": "Blue Top",
+    "nonMatchingSearch": "no-such-product-xyz",
+    "cartProductName": "Blue Top",
+    "cartQuantity": 2,
+    "productDetails": {
+      "name": "Blue Top",
+      "category": "Category: Women > Tops",
+      "price": "Rs. 500",
+      "availability": "Availability: In Stock",
+      "condition": "Condition: New",
+      "brand": "Brand: Polo"
+    },
+    "categories": ["Women", "Men", "Kids"],
+    "brands": [
+      "Polo",
+      "H&M",
+      "Madame",
+      "Mast & Harbour",
+      "Babyhug",
+      "Allen Solly Junior",
+      "Kookie Kids",
+      "Biba"
+    ]
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "name": "playwright-bdd-framework-training",
+  "version": "1.0.0",
+  "description": "Beginner-friendly Playwright and Cucumber.js automation framework for AutomationExercise.",
+  "scripts": {
+    "clean:allure-results": "node scripts/clean-allure-results.js",
+    "test": "npm run clean:allure-results && cucumber-js",
+    "test:no-retries": "npm run clean:allure-results && cross-env CUCUMBER_RETRIES=0 cucumber-js --config cucumber.js",
+    "test:retry": "npm run clean:allure-results && cross-env CUCUMBER_RETRIES=2 cucumber-js --config cucumber.js",
+    "test:retry-demo": "npm run clean:allure-results && cross-env CUCUMBER_RETRIES=2 RETRY_DEMO=true cucumber-js --config cucumber.js --tags \"@retry-demo\"",
+    "test:parallel": "npm run clean:allure-results && cucumber-js --config cucumber.js --parallel 3",
+    "test:cucumber": "npm run clean:allure-results && cucumber-js --config cucumber.js",
+    "test:chromium": "npm run clean:allure-results && cross-env BROWSER=chromium cucumber-js --config cucumber.js",
+    "test:firefox": "npm run clean:allure-results && cross-env BROWSER=firefox cucumber-js --config cucumber.js",
+    "test:webkit": "npm run clean:allure-results && cross-env BROWSER=webkit cucumber-js --config cucumber.js",
+    "test:ui": "npm run clean:allure-results && cucumber-js --tags \"@ui\"",
+    "test:api": "npm run clean:allure-results && cucumber-js --tags \"@api\"",
+    "test:integration": "npm run clean:allure-results && cucumber-js --tags \"@integration\"",
+    "test:headed": "npm run clean:allure-results && cross-env HEADLESS=false cucumber-js",
+    "test:debug": "npm run clean:allure-results && cross-env DEBUG=pw:api,pw:browser* cucumber-js --fail-fast",
+    "report:cucumber": "npm run clean:allure-results && cucumber-js --config cucumber.js",
+    
+    "report:allure": "node scripts/clean-allure-report.js && allure generate artifacts/reports/allure-results --output artifacts/reports/allure-report",
+    "allure:generate": "allure generate allure-results --clean -o reports/allure-report",
+    "allure:open": "allure open reports/allure-report",
+    "allure:share": "allure generate allure-results --clean --single-file --name \"Team Allure Report\" -o reports/allure-share && node scripts/package-allure-report.js",
+    
+    "config:check": "node -e \"import('./config/config.js').then(({ config }) => console.log(JSON.stringify(config, null, 2)))\"",
+    "lint": "eslint .",
+    "format:check": "prettier --check package.json config/config.js eslint.config.js cucumber.js README.md \"features/**/*.js\" \"scripts/**/*.js\" \"src/**/*.js\" \"utils/**/*.js\"",
+    "format": "prettier --write package.json config/config.js eslint.config.js cucumber.js README.md \"features/**/*.js\" \"scripts/**/*.js\" \"src/**/*.js\" \"utils/**/*.js\""
+  },
+  "keywords": [
+    "automationexercise",
+    "cucumber",
+    "playwright"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "author": {
+    "name": "Bhupathi"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^13.2.1",
+    "@eslint/js": "^10.0.1",
+    "allure": "3.20.1",
+    "allure-cucumberjs": "^3.12.2",
+    "cross-env": "^10.1.0",
+    "dotenv": "^17.2.2",
+    "eslint": "^10.11.0",
+    "playwright": "^1.63.0",
+    "prettier": "^3.9.9",
+    "winston": "^3.19.0"
+  }
+}

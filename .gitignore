@@ -1,0 +1,16 @@
+node_modules/
+.env
+
+artifacts/reports/
+artifacts/screenshots/
+artifacts/traces/
+artifacts/videos/
+artifacts/logs/
+reports/
+screenshots/
+allure-results/
+allure-report/
+
+*.log
+.DS_Store
+Thumbs.db
