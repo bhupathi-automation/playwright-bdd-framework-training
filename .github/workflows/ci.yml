@@ -1,0 +1,85 @@
+name: Playwright BDD CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+      - qa
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: Test tags to run
+        required: true
+        type: choice
+        options:
+          - all
+          - ui
+          - api
+          - integration
+        default: all
+      headless:
+        description: Run the browser without a visible window
+        required: true
+        type: boolean
+        default: true
+  schedule:
+    - cron: '0 2 * * 0'
+
+jobs:
+  cucumber-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    env:
+      BASE_URL: https://automationexercise.com
+      API_BASE_URL: https://automationexercise.com/api
+      BROWSER: chromium
+      HEADLESS: ${{ github.event_name != 'workflow_dispatch' || inputs.headless }}
+      LOG_LEVEL: INFO
+      LOG_TO_FILE: 'true'
+      SCREENSHOT_ON_FAILURE: 'true'
+      TRACE_ON_FAILURE: 'true'
+      VIDEO_ON_FAILURE: 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run lint
+      - name: Run Cucumber tests
+        env:
+          TEST_SUITE: ${{ github.event_name == 'workflow_dispatch' && inputs.suite || 'all' }}
+          VALID_EMAIL: ${{ secrets.VALID_EMAIL }}
+          VALID_PASSWORD: ${{ secrets.VALID_PASSWORD }}
+          LOGIN_USERNAME: ${{ secrets.LOGIN_USERNAME }}
+        run: |
+          case "$TEST_SUITE" in
+            all) npm test ;;
+            ui) npm run test:ui ;;
+            api) npm run test:api ;;
+            integration) npm run test:integration ;;
+            *) echo "Unsupported test suite: $TEST_SUITE" >&2; exit 1 ;;
+          esac
+      - name: Generate Allure HTML report
+        if: always() && hashFiles('artifacts/reports/allure-results/*-result.json') != ''
+        run: npm run report:allure
+      - name: Upload reports and failure artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-bdd-results
+          path: |
+            artifacts/reports/
+            artifacts/screenshots/
+            artifacts/traces/
+            artifacts/videos/
+            artifacts/logs/
+          if-no-files-found: ignore
+          retention-days: 14
